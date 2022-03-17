@@ -1,0 +1,45 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 100%;
+  max-width: 16rem;
+  top: 0;
+  bottom: 0;
+  z-index: 910;
+  transition: .4s all ease;
+  background: var(--black);
+}
+
+.brand{
+  color: #fff;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  position: relative;
+  display: block;
+  padding: 1rem 1.5rem;
+  &::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(234, 234, 234, 0.2);
+  }
+}
+
+.body{
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.nav{
+  margin-top: 2rem;
+  a{
+    padding: 1rem 1.5rem;
+    display: inline-block;
+    color: #fff;
+    font-size: 1.25rem;
+  }
+}

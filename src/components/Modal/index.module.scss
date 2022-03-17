@@ -1,0 +1,32 @@
+.modal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.8);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.body{
+  position: relative;
+  width: 600px;
+  max-width: calc(100% - 0.01px)!important;
+  background: var(--dark);
+  padding: 2rem;
+  border-radius: 1.25rem;
+}
+.close{
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.title{
+  color: #fff;
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+}
