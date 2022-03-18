@@ -1,38 +1,34 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import Dashboard from "../../layouts/dashboard";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {
+    deleteBicyclesTypes,
+    fetchBicyclesTypes,
+    patchBicyclesTypes,
+    postBicyclesTypes
+} from "../../redux/actions/TypesAction";
 import {motion} from "framer-motion";
-import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from "react-toastify";
 import {PageTransition} from "../../motion";
 import TableData from "../../components/TableData";
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {deleteBicycles, fetchBicycles, patchBicycles, postBicycles} from "../../redux/actions/BicyclesAction";
-import ModalBicycles from "../../blocks/modals/modalBicycles/ModalBicycles";
+import {ToastContainer} from "react-toastify";
+import Dashboard from "../../layouts/dashboard";
+import 'react-toastify/dist/ReactToastify.css';
+import ModalType from "../../blocks/modals/modalType";
 import {getModal} from "../../helpers/functions";
-import {clearBicycles, getBicycles, setBicyclesValue} from "../../redux/reducers/BicyclesSlice";
 import {closeModal, openModal} from "../../redux/reducers/ModalSlice";
-import {IBicycles} from "../../redux/types/IBicycles";
-import {fetchBicyclesTypes} from "../../redux/actions/TypesAction";
 import {IType} from "../../redux/types/IType";
+import {clearType, getType, setTypeValue} from "../../redux/reducers/TypesSlice";
 
-const rows = ['id', 'Модель', 'Цена', 'Тип'];
+const rows = ['id', 'Название'];
 
-const Bicycles = () => {
+const BicyclesType = () => {
 
+    const {type, types} = useAppSelector(state => state.typesReducer);
     const {modals} = useAppSelector(state => state.modalsReducer);
-    const {bicycles, bicycle} = useAppSelector(state => state.bicyclesReducer);
-    const {types} = useAppSelector(state => state.typesReducer);
     const dispatch = useAppDispatch();
 
     const [statusModal, setStatusModal] = useState<'ADD' | 'UPDATE'>('ADD');
 
-    const modalBicycles = getModal(modals, 'modalBicycles');
-
-    useEffect(() => {
-        dispatch(fetchBicycles())
-        dispatch(fetchBicyclesTypes())
-    }, [dispatch])
-
+    const modalType = getModal(modals, 'modalType');
 
     const handleOpenModal = (id: string) => {
         dispatch(openModal(id))
@@ -40,45 +36,44 @@ const Bicycles = () => {
 
     const handleCloseModal = (id: string) => {
         dispatch(closeModal(id));
-        dispatch(clearBicycles());
+        dispatch(clearType());
         setStatusModal('ADD');
     }
 
-    const handleOnDeleteBicycle = (id: number) => {
-        dispatch(deleteBicycles({id}))
+    const handleSetType = (value: string, name: string) => {
+        dispatch(setTypeValue({value, name}))
     }
 
-    const handleSetBicycles = (value: string | IType, name: string) => {
-        dispatch(setBicyclesValue({value, name}))
+    const handleOnDeleteType = (id: number) => {
+        dispatch(deleteBicyclesTypes({id}))
     }
-
-    const handleOnSubmit = (data:IBicycles) => {
-
-        const {id, model, bicycle_type, rental_price} = data;
-
-        switch (statusModal){
+    const handleOnSubmit = (data:IType) => {
+        const {id, name} = data;
+        switch (statusModal) {
             case "ADD": {
-                dispatch(postBicycles({model, rental_price: +rental_price, bicycle_type}))
+                dispatch(postBicyclesTypes({name}))
                 break;
             }
             case "UPDATE": {
-                dispatch(patchBicycles({_id: id, data: {model, bicycle_type, rental_price: +rental_price}}))
+                dispatch(patchBicyclesTypes({_id: id, data: {name}}))
                 break;
             }
             default : {
                 break;
             }
         }
-
-        setStatusModal('ADD');
-
     }
 
-    const handleOnUpdate = (data:any, id: string) => {
+
+    const handleOnUpdateType = (data:any, id: string) => {
         setStatusModal('UPDATE');
         dispatch(openModal(id));
-        dispatch(getBicycles(data))
+        dispatch(getType(data))
     }
+
+    useEffect(() => {
+        dispatch(fetchBicyclesTypes());
+    }, [dispatch])
 
     return (
         <>
@@ -91,16 +86,16 @@ const Bicycles = () => {
                 <div className={`row justify-content-between align-items-center`}>
                     <div className={`col-auto`}>
                         <h2>
-                            Таблица велосипедов
+                            Таблица типов велосипеда
                         </h2>
                     </div>
                     <div className={`col-auto`}>
                         <button
                             type={`button`}
-                            onClick={() => handleOpenModal(modalBicycles.id)}
+                            onClick={() => handleOpenModal(modalType.id)}
                             className={`btn btn-primary`}
                         >
-                            Добавить новый велосипед
+                            Добавить новый тип велосипеда
                         </button>
                     </div>
                 </div>
@@ -108,13 +103,13 @@ const Bicycles = () => {
                 <div className={`mt-5`}>
                     <TableData
                         rows={rows}
-                        columns={bicycles}
+                        columns={types}
                         remove={{
-                            onDelete: handleOnDeleteBicycle,
+                            onDelete: handleOnDeleteType
                         }}
                         update={{
-                            onUpdate: handleOnUpdate,
-                            modalId: modalBicycles.id
+                            onUpdate: handleOnUpdateType,
+                            modalId: modalType.id
                         }}
                     />
                 </div>
@@ -125,11 +120,10 @@ const Bicycles = () => {
                 theme={`colored`}
                 pauseOnHover={false}
             />
-            <ModalBicycles
-                modal={modalBicycles}
-                data={bicycle}
-                types={types}
-                setValue={handleSetBicycles}
+            <ModalType
+                modal={modalType}
+                data={type}
+                setValue={handleSetType}
                 onClose={handleCloseModal}
                 onSubmit={handleOnSubmit}
                 status={statusModal}
@@ -138,9 +132,9 @@ const Bicycles = () => {
     );
 };
 
-Bicycles.getLayout = function getLayout(page: ReactElement) {
+BicyclesType.getLayout = function getLayout(page: ReactElement) {
     return (
-        <Dashboard title={`Велосипеды`}>
+        <Dashboard title={`Типы велосипедов`}>
             {
                 page
             }
@@ -148,4 +142,4 @@ Bicycles.getLayout = function getLayout(page: ReactElement) {
     )
 }
 
-export default Bicycles;
+export default BicyclesType;

@@ -7,6 +7,8 @@ class Api {
     STAFF_URL = `employs/`;
     BICYCLES_URL = `bicycle/`;
 
+    BICYCLES_TYPE_URL = `bicycle_types/`;
+    RENTS_TYPE_URL = `rent_types/`;
 
     api = axios.create({
         baseURL: this.BASE_URL,
@@ -92,7 +94,7 @@ class Api {
                 }
             }
     }) {
-        return this.api.put(`${this.BICYCLES_URL}${action._id}`, action.data)
+        return this.api.put(`${this.BICYCLES_URL}${action._id}/`, action.data)
             .then(res => {
                 return res.data;
             })
@@ -108,6 +110,63 @@ class Api {
     }) {
 
         return this.api.post(this.BICYCLES_URL, action)
+            .then(res => {
+                return res.data
+            })
+    }
+
+
+    getBicyclesType() {
+        return this.api.get(this.BICYCLES_TYPE_URL)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    postBicyclesType(action: { name: string }) {
+        return this.api.post(this.BICYCLES_TYPE_URL, action)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    patchBicyclesType(action: { _id: number, data: { name: string } }) {
+        return this.api.put(`${this.BICYCLES_TYPE_URL}${action._id}/`, action.data)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    deleteBicyclesType(_id: number) {
+        return this.api.delete(`${this.BICYCLES_TYPE_URL}${_id}/`)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    getRentsType() {
+        return this.api.get(this.RENTS_TYPE_URL)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    postRentsType(action: { name: string }) {
+        return this.api.post(this.RENTS_TYPE_URL, action)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    patchRentsType(action: { _id: number, data: { name: string } }) {
+        return this.api.put(`${this.RENTS_TYPE_URL}${action._id}/`, action.data)
+            .then(res => {
+                return res.data
+            })
+    }
+
+    deleteRentsType(_id: number) {
+        return this.api.delete(`${this.RENTS_TYPE_URL}${_id}/`)
             .then(res => {
                 return res.data
             })

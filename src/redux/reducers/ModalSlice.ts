@@ -9,6 +9,8 @@ const initialState:IModalState = {
     modals: [
         {id: 'modalClient', isOpen: false},
         {id: 'modalStaff', isOpen: false},
+        {id: 'modalBicycles', isOpen: false},
+        {id: 'modalType', isOpen: false},
     ]
 }
 

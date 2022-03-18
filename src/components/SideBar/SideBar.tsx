@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import Link from 'next/link';
 
 import style from './index.module.scss';
+
 
 const SideBar = () => {
     return (
@@ -28,10 +29,22 @@ const SideBar = () => {
                             <a>Велосипеды</a>
                         </Link>
                     </li>
+                    <li>
+                        <Link href={`/admin/bicycles-type`}>
+                            <a>Типы велосипедов</a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={`/admin/rent-type`}>
+                            <a>Типы аренды</a>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </div>
     );
 };
+
+
 
 export default SideBar;

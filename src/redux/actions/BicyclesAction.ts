@@ -26,3 +26,44 @@ export const deleteBicycles = createAsyncThunk(
         }
     }
 )
+
+export const postBicycles = createAsyncThunk(
+    'biycles/post',
+    async (action: {
+        model: string,
+        rental_price: number,
+        bicycle_type: {
+            id: number,
+            name: string
+        }
+    }, {rejectWithValue}) => {
+        try {
+            return await API.postBicycles(action);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const patchBicycles = createAsyncThunk(
+    'biycles/patch',
+    async (action: {
+        _id: number, data:
+            {
+                model: string,
+                rental_price: number,
+                bicycle_type: {
+                    id: number,
+                    name: string
+                }
+            }
+    }, {rejectWithValue}) => {
+        try {
+            return await API.patchBicycles(action);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)

@@ -3,12 +3,14 @@ import modalsReducer from './reducers/ModalSlice';
 import clientReducer from './reducers/ClientSlice';
 import staffReducer from './reducers/StaffSlice';
 import bicyclesReducer from './reducers/BicyclesSlice';
+import typesReducer from './reducers/TypesSlice';
 
 const rootReducer = combineReducers({
     modalsReducer,
     clientReducer,
     staffReducer,
     bicyclesReducer,
+    typesReducer
 })
 
 export const setupStore = () => {
