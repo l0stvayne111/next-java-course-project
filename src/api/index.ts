@@ -10,6 +10,8 @@ class Api {
     BICYCLES_TYPE_URL = `bicycle_types/`;
     RENTS_TYPE_URL = `rent_types/`;
 
+    RENTS_URL = `rents/`;
+
     api = axios.create({
         baseURL: this.BASE_URL,
     })
@@ -171,6 +173,33 @@ class Api {
                 return res.data
             })
     }
+
+
+    getRents() {
+        return this.api.get(this.RENTS_URL)
+            .then(res => {
+                return res.data;
+            })
+    }
+
+    deleteRent(id: number) {
+        return this.api.delete(`${this.RENTS_URL}${id}/`).then(res => {
+            return res.data
+        })
+    }
+
+    patchRent(action: { _id: number, data: any }){
+        return this.api.put(`${this.RENTS_URL}${action._id}/`, action.data).then(res => {
+            return res.data;
+        })
+    }
+
+    postRent(action: { _id: number, data: any }){
+        return this.api.post(`${this.RENTS_URL}${action._id}/`, action.data).then(res => {
+            return res.data;
+        })
+    }
+
 
 
 }

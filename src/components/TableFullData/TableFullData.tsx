@@ -1,13 +1,12 @@
 import React, {ReactElement, useEffect} from 'react';
 import {motion} from "framer-motion";
 import {fadeUp} from './../../motion';
-
 import style from './index.module.scss';
-
+import {IRent} from "../../redux/types/IRent";
 
 type ITableData = {
     rows: Array<string>
-    columns: Array<{}>
+    columns: Array<IRent>
     remove?: {
         onDelete: (id: number) => void
     }
@@ -17,40 +16,8 @@ type ITableData = {
     }
 }
 
-const TableData: React.FC<ITableData> = (
-    {
-        rows,
-        columns,
-        update,
-        remove
-    }) => {
+const TableFullData:React.FC<ITableData> = ({rows, columns, remove, update}) => {
 
-
-    const convertObjectKeys = (state: any) => {
-        let array: Array<ReactElement> = [];
-        for (let key in state) {
-            if (state.hasOwnProperty(key)) {
-                if (typeof state[key] === 'object') {
-                    array.push(<td>{state[key].name}</td>)
-                    // for (let key2 in state[key]) {
-                    //     if (state[key].hasOwnProperty(key2)){
-                    //         if (typeof state[key][key2] === 'object') {
-                    //             array.push(<td>{state[key][key2].name}</td>)
-                    //         } else {
-                    //             array.push(<td>{state[key].name}</td>)
-                    //         }
-                    //     }
-                    // }
-                } else {
-                    array.push(<td>{state[key]}</td>)
-                }
-
-            }
-        }
-
-        return array;
-
-    }
 
 
     return (
@@ -72,23 +39,31 @@ const TableData: React.FC<ITableData> = (
                             </motion.th>
                         ))
                     }
-                    <th style={{'width': '100px'}}/>
-                    <th style={{'width': '100px'}}/>
+                    <th style={{'width': '50px'}}/>
+                    <th style={{'width': '50px'}}/>
 
                 </tr>
                 </thead>
                 <tbody>
                 {
-                    columns.map((item: any, index: number) => (
+                    columns.map((item: IRent, index: number) => (
                         <motion.tr
                             variants={fadeUp}
                             initial={`initial`}
                             animate={`animate`}
                             custom={index}
                             key={index}>
-                            {
-                                convertObjectKeys(item)
-                            }
+                            <td>{item.id}</td>
+                            <td>{item.employ.name}</td>
+                            <td>{item.employ.phone}</td>
+                            <td>{item.bicycle.model}</td>
+                            <td>{item.bicycle.rental_price}</td>
+                            <td>{item.bicycle.bicycle_type.name}</td>
+                            <td>{item.client.name}</td>
+                            <td>{item.client.phone}</td>
+                            <td>{item.rent_type.name}</td>
+                            <td>{item.price}</td>
+                            <td>{item.start_of_rental} - {item.end_of_rental}</td>
                             {
                                 update && (
                                     <td>
@@ -124,4 +99,4 @@ const TableData: React.FC<ITableData> = (
     );
 };
 
-export default TableData;
+export default TableFullData;

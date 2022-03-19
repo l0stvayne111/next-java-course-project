@@ -10,8 +10,10 @@ import {
 import {toast} from "react-toastify";
 
 type ITypesState = {
-    types: Array<IType>,
-    type: IType,
+    typesBicycles: Array<IType>,
+    typesRents: Array<IType>,
+    typeBicycles: IType,
+    typeRent:IType,
 }
 
 const sampleType:IType = {
@@ -20,34 +22,45 @@ const sampleType:IType = {
 }
 
 const initialState:ITypesState = {
-    types: [],
-    type: {
+    typesBicycles: [],
+    typesRents: [],
+    typeBicycles: {
         id: 0,
         name: '',
-    }
+    },
+    typeRent : {
+        id: 0,
+        name: ''
+    },
+
 }
 
 export const typesSlice = createSlice({
     name: 'types',
     initialState,
     reducers: {
-        removeType(state, action: PayloadAction<number>){
-            let clone: Array<IType> = JSON.parse(JSON.stringify(state.types));
-            state.types = clone.filter((item:IType) => item.id !== action.payload);
-        },
-        setTypeValue(state, action: PayloadAction<{value: string, name: string}>){
+        removeType(state, action: PayloadAction<{id: number, key: string}>){
             // @ts-ignore
-            state.type[action.payload.name] = action.payload.value;
+            let clone: Array<IType> = JSON.parse(JSON.stringify(state[action.payload.key]));
+            // @ts-ignore
+            state[action.payload.key] = clone.filter((item:IType) => item.id !== action.payload.id);
         },
-        getType(state, action: PayloadAction<IType>){
-            state.types.map((item:IType) => {
-                if (item.id === action.payload.id) {
-                    state.type = item;
+        setTypeValue(state, action: PayloadAction<{value: string, name: string, key: string}>){
+            // @ts-ignore
+            state[action.payload.key][action.payload.name] = action.payload.value;
+        },
+        getType(state, action: PayloadAction<{data: IType, keys: {arr: string, item: string}}>){
+            // @ts-ignore
+            state[action.payload.keys.arr].map((item:IType) => {
+                if (item.id === action.payload.data.id) {
+                    // @ts-ignore
+                    state[action.payload.keys.item] = item;
                 }
             })
         },
         clearType (state) {
-            state.type = sampleType;
+            state.typeBicycles = sampleType;
+            state.typeRent = sampleType;
         }
     },
     extraReducers: {
@@ -55,7 +68,7 @@ export const typesSlice = createSlice({
 
         },
         [fetchBicyclesTypes.fulfilled.type] : (state, action:PayloadAction<Array<IType>>) => {
-            state.types = action.payload;
+            state.typesBicycles = action.payload;
             toast.success('Типы успешно загружены', {
                 position: "bottom-center"
             })
@@ -70,7 +83,7 @@ export const typesSlice = createSlice({
 
         },
         [fetchRentsTypes.fulfilled.type] : (state, action:PayloadAction<Array<IType>>) => {
-            state.types = action.payload;
+            state.typesRents = action.payload;
             toast.success('Типы успешно загружены', {
                 position: "bottom-center"
             })
@@ -85,7 +98,7 @@ export const typesSlice = createSlice({
 
         [postBicyclesTypes.pending.type] : () => {},
         [postBicyclesTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
-            state.types.push(action.payload);
+            state.typesBicycles.push(action.payload);
             toast.success('Тип велосипеда успешно создан', {
                 position: "bottom-center"
             })
@@ -98,7 +111,7 @@ export const typesSlice = createSlice({
 
         [patchBicyclesTypes.pending.type] : () => {},
         [patchBicyclesTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
-            state.types.map((item:IType) => {
+            state.typesBicycles.map((item:IType) => {
                 if (item.id === action.payload.id) {
                     item.name = action.payload.name;
                 }
@@ -127,7 +140,7 @@ export const typesSlice = createSlice({
 
         [postRentsTypes.pending.type] : () => {},
         [postRentsTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
-            state.types.push(action.payload);
+            state.typesRents.push(action.payload);
             toast.success('Тип велосипеда успешно создан', {
                 position: "bottom-center"
             })
@@ -140,7 +153,7 @@ export const typesSlice = createSlice({
 
         [patchRentsTypes.pending.type] : () => {},
         [patchRentsTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
-            state.types.map((item:IType) => {
+            state.typesRents.map((item:IType) => {
                 if (item.id === action.payload.id) {
                     item.name = action.payload.name;
                 }

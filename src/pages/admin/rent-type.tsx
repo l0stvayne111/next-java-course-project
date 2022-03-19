@@ -24,7 +24,7 @@ const rows = ['id', 'Название'];
 
 const RentType = () => {
 
-    const {type, types} = useAppSelector(state => state.typesReducer);
+    const {typeRent, typesRents} = useAppSelector(state => state.typesReducer);
     const {modals} = useAppSelector(state => state.modalsReducer);
     const dispatch = useAppDispatch();
 
@@ -43,7 +43,7 @@ const RentType = () => {
     }
 
     const handleSetType = (value: string, name: string) => {
-        dispatch(setTypeValue({value, name}))
+        dispatch(setTypeValue({value, name, key: 'typeRent'}))
     }
 
     const handleOnDeleteType = (id: number) => {
@@ -70,7 +70,7 @@ const RentType = () => {
     const handleOnUpdateType = (data:any, id: string) => {
         setStatusModal('UPDATE');
         dispatch(openModal(id));
-        dispatch(getType(data))
+        dispatch(getType({data, keys: {arr: 'typesRents', item: 'typeRent'}}))
     }
 
     useEffect(() => {
@@ -105,7 +105,7 @@ const RentType = () => {
                 <div className={`mt-5`}>
                     <TableData
                         rows={rows}
-                        columns={types}
+                        columns={typesRents}
                         remove={{
                             onDelete: handleOnDeleteType
                         }}
@@ -124,7 +124,7 @@ const RentType = () => {
             />
             <ModalType
                 modal={modalType}
-                data={type}
+                data={typeRent}
                 setValue={handleSetType}
                 onClose={handleCloseModal}
                 onSubmit={handleOnSubmit}

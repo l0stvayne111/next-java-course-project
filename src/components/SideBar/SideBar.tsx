@@ -30,6 +30,11 @@ const SideBar = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link href={`/admin/rent`}>
+                            <a>Аренда</a>
+                        </Link>
+                    </li>
+                    <li>
                         <Link href={`/admin/bicycles-type`}>
                             <a>Типы велосипедов</a>
                         </Link>

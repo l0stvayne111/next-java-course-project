@@ -7,8 +7,9 @@ type IFormSelect = {
     name: string,
     label: string,
     value: number,
-    setValue: (value: string | IType, name: string) => void,
-    options: Array<IType>
+    setValue: (value: string | any, name: string) => void,
+    options: Array<any>,
+    patch?: string,
 }
 
 const FormSelect: React.FC<IFormSelect> = (
@@ -17,10 +18,14 @@ const FormSelect: React.FC<IFormSelect> = (
         value,
         setValue,
         label,
-        options
+        options,
+        patch= 'name',
     }) => {
 
     useEffect(() => {
+
+
+
         if (value === 0) {
            setValue(options[0], name)
         }
@@ -28,9 +33,9 @@ const FormSelect: React.FC<IFormSelect> = (
 
     const handleOnSelect = (event: React.FormEvent<HTMLSelectElement>) => {
         const id = +event.currentTarget.value;
-        let clone:Array<IType> = options.concat();
+        let clone:Array<any> = options.concat();
         // @ts-ignore
-        const option:IType = clone.find((i:IType) => i.id === id);
+        const option:any = clone.find((i:any) => i.id === id);
         setValue(option, name);
     }
 
@@ -45,8 +50,9 @@ const FormSelect: React.FC<IFormSelect> = (
                     onChange={event => handleOnSelect(event)}
                 >
                     {
-                        options.map((item: IType, index: number) => (
-                            <option value={item.id} key={index}>{item.name}</option>
+                        options.map((item: any, index: number) => (
+                            <option value={item.id} key={index}>{item[patch]}
+                            </option>
                         ))
                     }
                 </select>

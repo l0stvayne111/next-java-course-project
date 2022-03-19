@@ -84,6 +84,7 @@ const ModalBicycles:React.FC<IModalBicycles> = (
                             <FormSelect
                                 name={`bicycle_type`}
                                 label={`Тип велосипеда`}
+                                patch={`name`}
                                 value={bicycle_type.id}
                                 setValue={setValue}
                                 options={types}

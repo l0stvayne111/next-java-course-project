@@ -19,7 +19,7 @@ export const deleteBicyclesTypes = createAsyncThunk(
     async (action: {id: number}, {rejectWithValue, dispatch}) => {
         try {
             await API.deleteBicyclesType(action.id)
-            dispatch(removeType(action.id))
+            dispatch(removeType({id: action.id, key: 'typesBicycles'}))
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)
@@ -68,7 +68,7 @@ export const deleteRentsTypes = createAsyncThunk(
     async (action: {id: number}, {rejectWithValue, dispatch}) => {
         try {
             await API.deleteRentsType(action.id);
-            dispatch(removeType(action.id))
+            dispatch(removeType({id: action.id, key: 'typesRents'}))
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)

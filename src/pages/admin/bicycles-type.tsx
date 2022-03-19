@@ -22,7 +22,7 @@ const rows = ['id', 'Название'];
 
 const BicyclesType = () => {
 
-    const {type, types} = useAppSelector(state => state.typesReducer);
+    const {typeBicycles, typesBicycles} = useAppSelector(state => state.typesReducer);
     const {modals} = useAppSelector(state => state.modalsReducer);
     const dispatch = useAppDispatch();
 
@@ -41,7 +41,7 @@ const BicyclesType = () => {
     }
 
     const handleSetType = (value: string, name: string) => {
-        dispatch(setTypeValue({value, name}))
+        dispatch(setTypeValue({value, name, key: 'typeBicycles'}))
     }
 
     const handleOnDeleteType = (id: number) => {
@@ -68,7 +68,7 @@ const BicyclesType = () => {
     const handleOnUpdateType = (data:any, id: string) => {
         setStatusModal('UPDATE');
         dispatch(openModal(id));
-        dispatch(getType(data))
+        dispatch(getType({data, keys: {arr: 'typesBicycles', item: 'typeBicycles'}}))
     }
 
     useEffect(() => {
@@ -103,7 +103,7 @@ const BicyclesType = () => {
                 <div className={`mt-5`}>
                     <TableData
                         rows={rows}
-                        columns={types}
+                        columns={typesBicycles}
                         remove={{
                             onDelete: handleOnDeleteType
                         }}
@@ -122,7 +122,7 @@ const BicyclesType = () => {
             />
             <ModalType
                 modal={modalType}
-                data={type}
+                data={typeBicycles}
                 setValue={handleSetType}
                 onClose={handleCloseModal}
                 onSubmit={handleOnSubmit}

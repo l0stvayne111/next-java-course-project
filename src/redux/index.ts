@@ -4,13 +4,15 @@ import clientReducer from './reducers/ClientSlice';
 import staffReducer from './reducers/StaffSlice';
 import bicyclesReducer from './reducers/BicyclesSlice';
 import typesReducer from './reducers/TypesSlice';
+import rentReducer from './reducers/RentSlice';
 
 const rootReducer = combineReducers({
     modalsReducer,
     clientReducer,
     staffReducer,
     bicyclesReducer,
-    typesReducer
+    typesReducer,
+    rentReducer
 })
 
 export const setupStore = () => {

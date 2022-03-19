@@ -21,7 +21,7 @@ const Bicycles = () => {
 
     const {modals} = useAppSelector(state => state.modalsReducer);
     const {bicycles, bicycle} = useAppSelector(state => state.bicyclesReducer);
-    const {types} = useAppSelector(state => state.typesReducer);
+    const {typesBicycles} = useAppSelector(state => state.typesReducer);
     const dispatch = useAppDispatch();
 
     const [statusModal, setStatusModal] = useState<'ADD' | 'UPDATE'>('ADD');
@@ -128,7 +128,7 @@ const Bicycles = () => {
             <ModalBicycles
                 modal={modalBicycles}
                 data={bicycle}
-                types={types}
+                types={typesBicycles}
                 setValue={handleSetBicycles}
                 onClose={handleCloseModal}
                 onSubmit={handleOnSubmit}

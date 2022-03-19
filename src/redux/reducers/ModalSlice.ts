@@ -11,6 +11,7 @@ const initialState:IModalState = {
         {id: 'modalStaff', isOpen: false},
         {id: 'modalBicycles', isOpen: false},
         {id: 'modalType', isOpen: false},
+        {id: 'modalRent', isOpen: false}
     ]
 }
 
