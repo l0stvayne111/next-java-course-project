@@ -17,9 +17,9 @@ export const fetchRents = createAsyncThunk(
 
 export const postRent = createAsyncThunk(
     'post/rent',
-    async (action: { id: number, data: any }, {rejectWithValue}) => {
+    async (action: {payload: any}, {rejectWithValue}) => {
         try {
-            return await API.postRent({_id: action.id, data: action.data});
+            return await API.postRent({payload: action.payload});
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import {IModal} from "../../../redux/types/IModal";
 import {IRent} from "../../../redux/types/IRent";
 import {IType} from "../../../redux/types/IType";
@@ -19,7 +19,8 @@ type IModalRent = {
     typesRents: Array<IType>,
     onClose: (id: string) => void,
     status: 'ADD' | 'UPDATE',
-    setValue: (value: string | IStaff | IBicycles | IClient | IType, name: string) => void
+    setValue: (value: string | IStaff | IBicycles | IClient | IType, name: string) => void,
+    onSubmit: (data:any) => void
 }
 
 const ModalRent: React.FC<IModalRent> = (
@@ -33,7 +34,8 @@ const ModalRent: React.FC<IModalRent> = (
         status,
         setValue,
         staffs,
-        typesBicycles
+        typesBicycles,
+        onSubmit
     }) => {
 
     const [isValid, setIsValid] = useState({
@@ -61,111 +63,89 @@ const ModalRent: React.FC<IModalRent> = (
     } = data;
 
 
+    const handleOnSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        if (house) {
+            const data: any = {
+                id: 1,
+                employ: employ,
+                bicycle: bicycle,
+                client: client,
+                rent_type: rent_type,
+                hours: +house,
+            }
+            onSubmit(data)
+
+        }
+
+
+    }
+
+
     return (
         <Modal modal={modal} closeModal={handleCloseModal} title={`Аренда`}>
-            <form>
-                <div className={`row`}>
+            <form onSubmit={event => handleOnSubmit(event)}>
+                <div className={`row mt-4`}>
 
-                    {
-
-                        (status === 'UPDATE') && (
-                            <>
-                                <div className={`col-12`}>
-                                    <FormSelect
-                                        name={`bicycle`}
-                                        label={`Велосипед`}
-                                        value={bicycle.id}
-                                        patch={`bicycle_type`}
-                                        setValue={setValue}
-                                        options={bicycles}
-                                    />
-                                </div>
-                                <div className={`col-12`}>
-                                    <FormInput
-                                        value={rental_price as string}
-                                        placeholder={`Введите стоимость`}
-                                        setValue={setValue}
-                                        name={'rental_price'}
-                                        label={`Стоимость`}
-                                    />
-                                </div>
-                                <div className={`col-6`}>
-                                    <FormSelect
-                                        name={`bicycle_type`}
-                                        patch={`name`}
-                                        label={`Тип велосипеда`}
-                                        value={bicycle.bicycle_type.id}
-                                        setValue={setValue}
-                                        options={typesBicycles}
-                                    />
-                                </div>
-
-                            </>
-
-                        )
-
-                    }
-                    {/*<div className={`col-6`}>*/}
-                    {/*    <FormSelect*/}
-                    {/*        name={`employ`}*/}
-                    {/*        patch={`name`}*/}
-                    {/*        label={`Сотрудник`}*/}
-                    {/*        value={employ.id}*/}
-                    {/*        setValue={setValue}*/}
-                    {/*        options={staffs}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className={`col-6`}>*/}
-                    {/*    <FormSelect*/}
-                    {/*        name={`bicycle`}*/}
-                    {/*        label={`Велосипед`}*/}
-                    {/*        value={bicycle.id}*/}
-                    {/*        patch={`model`}*/}
-                    {/*        setValue={setValue}*/}
-                    {/*        options={bicycles}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className={`col-6`}>*/}
-                    {/*    <FormSelect*/}
-                    {/*        name={`rent_type`}*/}
-                    {/*        label={`Тип аренды`}*/}
-                    {/*        value={rent_type.id}*/}
-                    {/*        patch={`name`}*/}
-                    {/*        setValue={setValue}*/}
-                    {/*        options={typesRents}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className={`col-6`}>*/}
-                    {/*    <FormSelect*/}
-                    {/*        name={`client`}*/}
-                    {/*        label={`Клиент`}*/}
-                    {/*        value={client.id}*/}
-                    {/*        patch={`name`}*/}
-                    {/*        setValue={setValue}*/}
-                    {/*        options={clients}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className={`col-12`}>*/}
-                    {/*    <FormInput*/}
-                    {/*        value={price as string}*/}
-                    {/*        placeholder={`Введите цену`}*/}
-                    {/*        setValue={setValue}*/}
-                    {/*        name={'price'}*/}
-                    {/*        label={`Цена`}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    <div className={`col-12`}>
-                        <button
-                            type={`submit`}
-                            className={`btn btn-primary ${!isValid.formValid ? 'disabled' : ''}`}>
-                            {
-                                status === 'ADD' && (<>Добавить клиента</>)
-                            }
-                            {
-                                status === 'UPDATE' && (<>Обновить клиента</>)
-                            }
-                        </button>
+                    <div className={`col-6`}>
+                        <FormSelect
+                            name={'employ'}
+                            label={'Сотрудник'}
+                            value={employ.id}
+                            setValue={setValue}
+                            options={staffs}
+                        />
                     </div>
+                    <div className={`col-6`}>
+                        <FormSelect
+                            name={'client'}
+                            label={'Клиент'}
+                            value={client.id}
+                            setValue={setValue}
+                            options={clients}
+                        />
+                    </div>
+                    <div className={`col-6`}>
+                        <FormSelect
+                            name={'bicycle'}
+                            label={'Велосипед'}
+                            value={bicycle.id}
+                            patch={`model`}
+                            setValue={setValue}
+                            options={bicycles}
+                        />
+                    </div>
+                    <div className={`col-6`}>
+                        <FormSelect
+                            name={'rent_type'}
+                            label={'Тип аренды'}
+                            value={rent_type.id}
+                            setValue={setValue}
+                            options={typesRents}
+                        />
+                    </div>
+                    <div className={`col-12`}>
+                        {
+                            house !== undefined && (
+                                <FormInput
+                                    value={house as string}
+                                    placeholder={'Введите время аренды'}
+                                    setValue={setValue}
+                                    name={`house`}
+                                    label={'Время аренды (час)'}
+                                />
+                            )
+                        }
+                    </div>
+
+                        <div className={`col-12`}>
+                            <button
+                                className={`btn btn-primary`}
+                                type={`submit`}>
+                                Добавить аренду
+                            </button>
+                        </div>
+
                 </div>
             </form>
         </Modal>

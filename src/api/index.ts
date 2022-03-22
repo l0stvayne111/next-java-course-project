@@ -194,8 +194,8 @@ class Api {
         })
     }
 
-    postRent(action: { _id: number, data: any }){
-        return this.api.post(`${this.RENTS_URL}${action._id}/`, action.data).then(res => {
+    postRent(action: {payload:any}){
+        return this.api.post(this.RENTS_URL, action.payload).then(res => {
             return res.data;
         })
     }

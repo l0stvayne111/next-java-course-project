@@ -55,9 +55,6 @@ export const staffSlice = createSlice({
         },
         [fetchStaff.fulfilled.type] : (state, action: PayloadAction<Array<IStaff>>) => {
             state.staffs = action.payload;
-            toast.success('Сотрудники получены', {
-                position: "bottom-center"
-            })
         },
         [fetchStaff.rejected.type] : () => {
             toast.error('Ошибка загрузки сотрудников', {

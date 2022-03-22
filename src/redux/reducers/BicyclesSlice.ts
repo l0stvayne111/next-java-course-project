@@ -75,9 +75,6 @@ export const bicyclesSlice = createSlice({
         },
         [fetchBicycles.fulfilled.type] : (state, action:PayloadAction<Array<IBicycles>>) => {
             state.bicycles = action.payload;
-            toast.success('Велосипеды получены', {
-                position: "bottom-center"
-            })
         },
         [fetchBicycles.rejected.type] : () => {
             toast.error('Ошибка загрузки велосипедов', {

@@ -69,9 +69,6 @@ export const typesSlice = createSlice({
         },
         [fetchBicyclesTypes.fulfilled.type] : (state, action:PayloadAction<Array<IType>>) => {
             state.typesBicycles = action.payload;
-            toast.success('Типы успешно загружены', {
-                position: "bottom-center"
-            })
         },
         [fetchBicyclesTypes.rejected.type] : () => {
             toast.error('Ошибка, типы не загружены', {
@@ -84,9 +81,6 @@ export const typesSlice = createSlice({
         },
         [fetchRentsTypes.fulfilled.type] : (state, action:PayloadAction<Array<IType>>) => {
             state.typesRents = action.payload;
-            toast.success('Типы успешно загружены', {
-                position: "bottom-center"
-            })
         },
         [fetchRentsTypes.rejected.type] : () => {
             toast.error('Ошибка, типы не загружены', {

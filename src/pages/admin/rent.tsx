@@ -1,10 +1,9 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import Dashboard from "../../layouts/dashboard";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {fetchRents} from "../../redux/actions/RentAction";
+import {fetchRents, postRent} from "../../redux/actions/RentAction";
 import {motion} from "framer-motion";
 import {PageTransition} from "../../motion";
-import TableData from "../../components/TableData";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import TableFullData from "../../components/TableFullData";
@@ -72,6 +71,11 @@ const Rent = () => {
         dispatch(fetchBicyclesTypes())
     }, [dispatch])
 
+
+    const handleOnSubmit = (data:any) => {
+        dispatch(postRent({payload: data}));
+    }
+
     return (
         <>
             <motion.div
@@ -117,18 +121,19 @@ const Rent = () => {
                 theme={`colored`}
                 pauseOnHover={false}
             />
-            {/*<ModalRent*/}
-            {/*    typesBicycles={typesBicycles}*/}
-            {/*    clients={clients}*/}
-            {/*    staffs={staffs}*/}
-            {/*    bicycles={bicycles}*/}
-            {/*    modal={modalRent}*/}
-            {/*    data={rent}*/}
-            {/*    typesRents={typesRents}*/}
-            {/*    onClose={handleCloseModal}*/}
-            {/*    status={statusModal}*/}
-            {/*    setValue={handleSetRent}*/}
-            {/*/>*/}
+            <ModalRent
+                onSubmit={handleOnSubmit}
+                typesBicycles={typesBicycles}
+                clients={clients}
+                staffs={staffs}
+                bicycles={bicycles}
+                modal={modalRent}
+                data={rent}
+                typesRents={typesRents}
+                onClose={handleCloseModal}
+                status={statusModal}
+                setValue={handleSetRent}
+            />
 
         </>
     );

@@ -57,9 +57,6 @@ export const clientSlice = createSlice({
         },
         [fetchClients.fulfilled.type]: (state, action: PayloadAction<Array<IClient>>) => {
             state.clients = action.payload;
-            toast.success('Клиенты получены', {
-                position: "bottom-center"
-            })
         },
         [fetchClients.rejected.type]: () => {
             toast.error('Ошибка загрузки клиентов', {

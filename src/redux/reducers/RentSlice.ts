@@ -1,6 +1,6 @@
 import {IRent} from "../types/IRent";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchRents} from "../actions/RentAction";
+import {fetchRents, postRent} from "../actions/RentAction";
 import {toast} from "react-toastify";
 import {IStaff} from "../types/IStaff";
 import {IBicycles} from "../types/IBicycles";
@@ -133,15 +133,23 @@ export const rentSlice = createSlice({
         },
         [fetchRents.fulfilled.type]: (state, action: PayloadAction<Array<IRent>>) => {
             state.rents = action.payload;
-            toast.success('Список аренд успешно загружены', {
-                position: "bottom-center"
-            })
         },
         [fetchRents.rejected.type]: () => {
             toast.error('Ошибка, список аренд не загружен', {
                 position: 'bottom-center'
             })
         },
+
+        [postRent.pending.type] : () => {
+            toast.info('Создается новая аренда', {position: 'bottom-center'})
+        },
+        [postRent.fulfilled.type] : (state, action:PayloadAction<IRent>) => {
+            state.rents.push(action.payload);
+            toast.success('Аренда успешно создана', {position: 'bottom-center'})
+        },
+        [postRent.rejected.type] : () => {
+            toast.error('Ошибка, аренда не создана', {position: 'bottom-center'})
+        }
 
     }
 })
