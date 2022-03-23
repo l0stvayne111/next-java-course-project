@@ -1,6 +1,6 @@
 import {IRent} from "../types/IRent";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchRents, postRent} from "../actions/RentAction";
+import {deleteRent, fetchRents, patchRent, postRent} from "../actions/RentAction";
 import {toast} from "react-toastify";
 import {IStaff} from "../types/IStaff";
 import {IBicycles} from "../types/IBicycles";
@@ -149,7 +149,46 @@ export const rentSlice = createSlice({
         },
         [postRent.rejected.type] : () => {
             toast.error('Ошибка, аренда не создана', {position: 'bottom-center'})
-        }
+        },
+
+        [deleteRent.pending.type]: () => {
+
+        },
+        [deleteRent.fulfilled.type]: () => {
+            toast.success('Аренда успешно удалена', {
+                position: "bottom-center"
+            })
+        },
+        [deleteRent.rejected.type]: () => {
+            toast.error('Ошибка, аренда не удалена', {
+                position: 'bottom-center'
+            })
+        },
+
+        [patchRent.pending.type]: () => {
+
+        },
+        [patchRent.fulfilled.type]: (state, action:PayloadAction<IRent>) => {
+            state.rents.map((item:IRent) => {
+                if (item.id === action.payload.id) {
+                    item.rent_type = action.payload.rent_type;
+                    item.client = action.payload.client;
+                    item.employ = action.payload.employ;
+                    item.bicycle = action.payload.bicycle;
+                    item.price = action.payload.price;
+                    item.start_of_rental = action.payload.start_of_rental;
+                    item.end_of_rental = action.payload.end_of_rental;
+                }
+            })
+            toast.info('Аренда успешно обновлена', {
+                position: "bottom-center"
+            })
+        },
+        [patchRent.rejected.type]: () => {
+            toast.error('Ошибка, аренда не обновлена', {
+                position: 'bottom-center'
+            })
+        },
 
     }
 })

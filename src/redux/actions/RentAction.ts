@@ -26,6 +26,18 @@ export const postRent = createAsyncThunk(
         }
     }
 )
+export const patchRent = createAsyncThunk(
+    'post/rent',
+    async (action: {id: number, payload: any}, {rejectWithValue}) => {
+        try {
+            return await API.patchRent({_id: action.id, data:action.payload});
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
 
 export const deleteRent = createAsyncThunk(
     'delete/rent',

@@ -20,7 +20,7 @@ type IModalRent = {
     onClose: (id: string) => void,
     status: 'ADD' | 'UPDATE',
     setValue: (value: string | IStaff | IBicycles | IClient | IType, name: string) => void,
-    onSubmit: (data:any) => void
+    onSubmit: (data: any) => void
 }
 
 const ModalRent: React.FC<IModalRent> = (
@@ -53,21 +53,17 @@ const ModalRent: React.FC<IModalRent> = (
         bicycle,
         employ,
         rent_type,
-        start_of_rental,
-        end_of_rental,
-        price,
-        house,
-        model,
-        rental_price,
-        bicycle_type
     } = data;
+
+
+    const [house, setHouse] = useState<string | number>(0);
 
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
         if (house) {
             const data: any = {
-                id: 1,
+                id: id,
                 employ: employ,
                 bicycle: bicycle,
                 client: client,
@@ -125,26 +121,26 @@ const ModalRent: React.FC<IModalRent> = (
                         />
                     </div>
                     <div className={`col-12`}>
-                        {
-                            house !== undefined && (
-                                <FormInput
-                                    value={house as string}
-                                    placeholder={'Введите время аренды'}
-                                    setValue={setValue}
-                                    name={`house`}
-                                    label={'Время аренды (час)'}
-                                />
-                            )
-                        }
+
+
+                        <FormInput
+                            value={house as string}
+                            placeholder={'Введите время аренды'}
+                            setValue={setHouse}
+                            name={`house`}
+                            label={'Время аренды (час)'}
+                        />
+
+
                     </div>
 
-                        <div className={`col-12`}>
-                            <button
-                                className={`btn btn-primary`}
-                                type={`submit`}>
-                                Добавить аренду
-                            </button>
-                        </div>
+                    <div className={`col-12`}>
+                        <button
+                            className={`btn btn-primary`}
+                            type={`submit`}>
+                            Добавить аренду
+                        </button>
+                    </div>
 
                 </div>
             </form>

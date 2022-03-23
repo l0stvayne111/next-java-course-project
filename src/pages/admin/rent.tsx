@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import Dashboard from "../../layouts/dashboard";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {fetchRents, postRent} from "../../redux/actions/RentAction";
+import {deleteRent, fetchRents, patchRent, postRent} from "../../redux/actions/RentAction";
 import {motion} from "framer-motion";
 import {PageTransition} from "../../motion";
 import {ToastContainer} from "react-toastify";
@@ -36,7 +36,7 @@ const Rent = () => {
     const [statusModal, setStatusModal] = useState<'ADD' | 'UPDATE'>('ADD')
 
     const handleOnDeleteRent = (id:number) => {
-        dispatch(removeRent(id))
+        dispatch(deleteRent(id))
     }
 
     const modalRent = getModal(modals, 'modalRent');
@@ -73,7 +73,23 @@ const Rent = () => {
 
 
     const handleOnSubmit = (data:any) => {
-        dispatch(postRent({payload: data}));
+
+        switch (statusModal) {
+            case "ADD": {
+                dispatch(postRent({payload: data}));
+                break;
+            }
+            case "UPDATE": {
+                dispatch(patchRent({id: data.id, payload: data}))
+                break;
+            }
+            default : {
+                break;
+            }
+        }
+
+        setStatusModal('ADD');
+
     }
 
     return (
