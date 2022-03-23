@@ -56,7 +56,7 @@ const ModalRent: React.FC<IModalRent> = (
     } = data;
 
 
-    const [house, setHouse] = useState<string | number>(0);
+    const [house, setHouse] = useState<string | number>(1);
 
 
     const handleOnSubmit = (event: FormEvent) => {
@@ -71,8 +71,8 @@ const ModalRent: React.FC<IModalRent> = (
                 hours: +house,
             }
             onSubmit(data)
-
         }
+        onClose(modal.id)
 
 
     }
@@ -136,9 +136,14 @@ const ModalRent: React.FC<IModalRent> = (
 
                     <div className={`col-12`}>
                         <button
-                            className={`btn btn-primary`}
-                            type={`submit`}>
-                            Добавить аренду
+                            type={`submit`}
+                            className={`btn btn-primary ${!isValid.formValid ? 'disabled' : ''}`}>
+                            {
+                                status === 'ADD' && (<>Добавить аренду</>)
+                            }
+                            {
+                                status === 'UPDATE' && (<>Обновить аренду</>)
+                            }
                         </button>
                     </div>
 

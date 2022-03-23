@@ -8,7 +8,7 @@ import {
     patchRentsTypes,
     postBicyclesTypes, postRentsTypes
 } from "../../redux/actions/TypesAction";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import {PageTransition} from "../../motion";
 import TableData from "../../components/TableData";
 import {ToastContainer} from "react-toastify";
@@ -18,13 +18,14 @@ import {closeModal, openModal} from "../../redux/reducers/ModalSlice";
 import {clearType, getType, setTypeValue} from "../../redux/reducers/TypesSlice";
 import {IType} from "../../redux/types/IType";
 import ModalType from "../../blocks/modals/modalType";
+import Preloader from "../../components/Preloader";
 
 
 const rows = ['id', 'Название'];
 
 const RentType = () => {
 
-    const {typeRent, typesRents} = useAppSelector(state => state.typesReducer);
+    const {typeRent, typesRents, status} = useAppSelector(state => state.typesReducer);
     const {modals} = useAppSelector(state => state.modalsReducer);
     const dispatch = useAppDispatch();
 
@@ -130,6 +131,11 @@ const RentType = () => {
                 onSubmit={handleOnSubmit}
                 status={statusModal}
             />
+            <AnimatePresence>
+                {
+                    status && <Preloader/>
+                }
+            </AnimatePresence>
         </>
     );
 };

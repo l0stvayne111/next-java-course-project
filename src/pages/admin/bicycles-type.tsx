@@ -6,7 +6,7 @@ import {
     patchBicyclesTypes,
     postBicyclesTypes
 } from "../../redux/actions/TypesAction";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import {PageTransition} from "../../motion";
 import TableData from "../../components/TableData";
 import {ToastContainer} from "react-toastify";
@@ -17,12 +17,13 @@ import {getModal} from "../../helpers/functions";
 import {closeModal, openModal} from "../../redux/reducers/ModalSlice";
 import {IType} from "../../redux/types/IType";
 import {clearType, getType, setTypeValue} from "../../redux/reducers/TypesSlice";
+import Preloader from "../../components/Preloader";
 
 const rows = ['id', 'Название'];
 
 const BicyclesType = () => {
 
-    const {typeBicycles, typesBicycles} = useAppSelector(state => state.typesReducer);
+    const {typeBicycles, typesBicycles, status} = useAppSelector(state => state.typesReducer);
     const {modals} = useAppSelector(state => state.modalsReducer);
     const dispatch = useAppDispatch();
 
@@ -128,6 +129,11 @@ const BicyclesType = () => {
                 onSubmit={handleOnSubmit}
                 status={statusModal}
             />
+            <AnimatePresence>
+                {
+                    status && <Preloader/>
+                }
+            </AnimatePresence>
         </>
     );
 };

@@ -2,7 +2,7 @@ import React, {ReactElement, useEffect, useState} from 'react';
 import Dashboard from "../../layouts/dashboard";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {getModal} from "../../helpers/functions";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import 'react-toastify/dist/ReactToastify.css';
 import {PageTransition} from "../../motion";
 import {closeModal, openModal} from "../../redux/reducers/ModalSlice";
@@ -12,6 +12,7 @@ import {ToastContainer} from "react-toastify";
 import ModalStaff from "../../blocks/modals/modalStaff";
 import {IStaff} from "../../redux/types/IStaff";
 import {clearStaff, getStaff, setStaffValue} from "../../redux/reducers/StaffSlice";
+import Preloader from "../../components/Preloader";
 
 const Staff = () => {
 
@@ -20,7 +21,7 @@ const Staff = () => {
 
 
     const {modals} = useAppSelector(state => state.modalsReducer);
-    const {staffs, staff} = useAppSelector(state => state.staffReducer);
+    const {staffs, staff, status} = useAppSelector(state => state.staffReducer);
     const dispatch = useAppDispatch();
 
     const [statusModal, setStatusModal] = useState<'ADD' | 'UPDATE'>('ADD');
@@ -122,6 +123,11 @@ const Staff = () => {
                 onSubmit={handleOnSubmit}
                 status={statusModal}
             />
+            <AnimatePresence>
+                {
+                    status && <Preloader/>
+                }
+            </AnimatePresence>
         </>
     );
 };

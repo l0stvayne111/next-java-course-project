@@ -11,7 +11,7 @@ import {IType} from "../types/IType";
 type IRentState = {
     rents: Array<IRent>,
     rent: IRent,
-
+    status: boolean
 }
 
 const sampleRent: IRent = {
@@ -90,7 +90,8 @@ const initialState: IRentState = {
             name: '',
         }
 
-    }
+    },
+    status: false
 }
 
 export const rentSlice = createSlice({
@@ -129,46 +130,55 @@ export const rentSlice = createSlice({
         }
     },
     extraReducers: {
-        [fetchRents.pending.type]: () => {
+        [fetchRents.pending.type]: (state) => {
+            state.status = true;
         },
         [fetchRents.fulfilled.type]: (state, action: PayloadAction<Array<IRent>>) => {
             state.rents = action.payload;
+            state.status = false;
         },
-        [fetchRents.rejected.type]: () => {
+        [fetchRents.rejected.type]: (state) => {
             toast.error('Ошибка, список аренд не загружен', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
-        [postRent.pending.type] : () => {
+        [postRent.pending.type] : (state) => {
+            state.status = true;
             toast.info('Создается новая аренда', {position: 'bottom-center'})
         },
         [postRent.fulfilled.type] : (state, action:PayloadAction<IRent>) => {
             state.rents.push(action.payload);
+            state.status = false;
             toast.success('Аренда успешно создана', {position: 'bottom-center'})
         },
-        [postRent.rejected.type] : () => {
+        [postRent.rejected.type] : (state) => {
+            state.status = false;
             toast.error('Ошибка, аренда не создана', {position: 'bottom-center'})
         },
 
-        [deleteRent.pending.type]: () => {
-
+        [deleteRent.pending.type]: (state) => {
+            state.status = true;
         },
-        [deleteRent.fulfilled.type]: () => {
+        [deleteRent.fulfilled.type]: (state) => {
+            state.status = false;
             toast.success('Аренда успешно удалена', {
                 position: "bottom-center"
             })
         },
-        [deleteRent.rejected.type]: () => {
+        [deleteRent.rejected.type]: (state) => {
+            state.status = false;
             toast.error('Ошибка, аренда не удалена', {
                 position: 'bottom-center'
             })
         },
 
-        [patchRent.pending.type]: () => {
-
+        [patchRent.pending.type]: (state) => {
+            state.status = true;
         },
         [patchRent.fulfilled.type]: (state, action:PayloadAction<IRent>) => {
+            state.status = false;
             state.rents.map((item:IRent) => {
                 if (item.id === action.payload.id) {
                     item.rent_type = action.payload.rent_type;
@@ -184,7 +194,8 @@ export const rentSlice = createSlice({
                 position: "bottom-center"
             })
         },
-        [patchRent.rejected.type]: () => {
+        [patchRent.rejected.type]: (state) => {
+            state.status = false;
             toast.error('Ошибка, аренда не обновлена', {
                 position: 'bottom-center'
             })

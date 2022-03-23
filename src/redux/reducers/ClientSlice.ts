@@ -6,7 +6,8 @@ import {deleteClient, fetchClients, patchClient, postClient} from "../actions/Cl
 type IClientState = {
     clients: Array<IClient>,
     client: IClient,
-    status: 'PENDING' | 'FULFILLED' | 'REJECTED',
+    //status: 'PENDING' | 'FULFILLED' | 'REJECTED',
+    status: boolean,
 }
 
 const sampleClient: IClient = {
@@ -22,7 +23,7 @@ const initialState: IClientState = {
         name: '',
         phone: ''
     },
-    status: "REJECTED",
+    status: false,
 }
 
 
@@ -53,55 +54,60 @@ export const clientSlice = createSlice({
     },
     extraReducers: {
         [fetchClients.pending.type]: (state) => {
-
+            state.status = true;
         },
         [fetchClients.fulfilled.type]: (state, action: PayloadAction<Array<IClient>>) => {
             state.clients = action.payload;
+            state.status = false;
         },
-        [fetchClients.rejected.type]: () => {
+        [fetchClients.rejected.type]: (state) => {
             toast.error('Ошибка загрузки клиентов', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
 
         [postClient.pending.type]: (state) => {
-            state.status = 'PENDING';
+            state.status = true;
         },
         [postClient.fulfilled.type]: (state, action: PayloadAction<IClient>) => {
             state.clients.push(action.payload);
             state.client = sampleClient;
-            state.status = 'FULFILLED';
+            state.status = false;
             toast.success('Клиент успешно создан', {
                 position: "bottom-center"
             })
         },
         [postClient.rejected.type] : (state) => {
-            state.status = 'REJECTED';
+            state.status = false;
             toast.error('Ошибка создания клиента', {
                 position: 'bottom-center'
             })
         },
 
-        [deleteClient.pending.type] : () => {
-
+        [deleteClient.pending.type] : (state) => {
+            state.status = true;
         },
-        [deleteClient.fulfilled.type] : () => {
+        [deleteClient.fulfilled.type] : (state) => {
             toast.success('Клиент успешно удален', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [deleteClient.rejected.type] : () => {
+        [deleteClient.rejected.type] : (state) => {
             toast.error('Ошибка, клиент не удален', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
 
-        [patchClient.pending.type] : () => {
-
+        [patchClient.pending.type] : (state) => {
+            state.status = true;
         },
         [patchClient.fulfilled.type] : (state, action: PayloadAction<IClient>) => {
+            state.status = false;
             state.clients.map((item: IClient) => {
                 if (item.id === action.payload.id) {
                     item.name = action.payload.name;
@@ -113,10 +119,11 @@ export const clientSlice = createSlice({
                 position: "bottom-center"
             })
         },
-        [patchClient.rejected.type] : () => {
+        [patchClient.rejected.type] : (state) => {
             toast.error('Ошибка, клиент не обновлен', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
 

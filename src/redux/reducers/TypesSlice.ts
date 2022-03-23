@@ -14,6 +14,7 @@ type ITypesState = {
     typesRents: Array<IType>,
     typeBicycles: IType,
     typeRent:IType,
+    status: boolean
 }
 
 const sampleType:IType = {
@@ -32,7 +33,7 @@ const initialState:ITypesState = {
         id: 0,
         name: ''
     },
-
+    status: false,
 }
 
 export const typesSlice = createSlice({
@@ -64,110 +65,127 @@ export const typesSlice = createSlice({
         }
     },
     extraReducers: {
-        [fetchBicyclesTypes.pending.type] : () => {
-
+        [fetchBicyclesTypes.pending.type] : (state) => {
+            state.status = true;
         },
         [fetchBicyclesTypes.fulfilled.type] : (state, action:PayloadAction<Array<IType>>) => {
             state.typesBicycles = action.payload;
+            state.status = false;
         },
-        [fetchBicyclesTypes.rejected.type] : () => {
+        [fetchBicyclesTypes.rejected.type] : (state) => {
             toast.error('Ошибка, типы не загружены', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
-        [fetchRentsTypes.pending.type] : () => {
-
+        [fetchRentsTypes.pending.type] : (state) => {
+            state.status = true;
         },
         [fetchRentsTypes.fulfilled.type] : (state, action:PayloadAction<Array<IType>>) => {
             state.typesRents = action.payload;
+            state.status = false;
         },
-        [fetchRentsTypes.rejected.type] : () => {
+        [fetchRentsTypes.rejected.type] : (state) => {
             toast.error('Ошибка, типы не загружены', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
 
 
-        [postBicyclesTypes.pending.type] : () => {},
+        [postBicyclesTypes.pending.type] : (state) => {state.status = true;},
         [postBicyclesTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
             state.typesBicycles.push(action.payload);
             toast.success('Тип велосипеда успешно создан', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [postBicyclesTypes.rejected.type] : () => {
+        [postBicyclesTypes.rejected.type] : (state) => {
             toast.error('Ошибка создания нового типа', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
-        [patchBicyclesTypes.pending.type] : () => {},
+        [patchBicyclesTypes.pending.type] : (state) => {state.status = true;},
         [patchBicyclesTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
             state.typesBicycles.map((item:IType) => {
                 if (item.id === action.payload.id) {
                     item.name = action.payload.name;
                 }
             })
+            state.status = false;
             toast.info('Тип успешно обновлен', {
                 position: "bottom-center"
             })
         },
-        [patchBicyclesTypes.rejected.type] : () => {
+        [patchBicyclesTypes.rejected.type] : (state) => {
             toast.error('Ошибка, тип не обновлен', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
-        [deleteBicyclesTypes.pending.type] : () => {},
-        [deleteBicyclesTypes.fulfilled.type] : () => {
+        [deleteBicyclesTypes.pending.type] : (state) => {state.status = true;},
+        [deleteBicyclesTypes.fulfilled.type] : (state) => {
             toast.success('Тип успешно удален', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [deleteBicyclesTypes.rejected.type] : () => {
+        [deleteBicyclesTypes.rejected.type] : (state) => {
             toast.error('Ошибка, тип не удален', {
                 position: 'bottom-center'
             })
+            state.status = false;
+
         },
 
 
-        [postRentsTypes.pending.type] : () => {},
+        [postRentsTypes.pending.type] : (state) => {state.status = true;},
         [postRentsTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
             state.typesRents.push(action.payload);
             toast.success('Тип велосипеда успешно создан', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [postRentsTypes.rejected.type] : () => {
+        [postRentsTypes.rejected.type] : (state) => {
             toast.error('Ошибка создания нового типа', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
-        [patchRentsTypes.pending.type] : () => {},
+        [patchRentsTypes.pending.type] : (state) => {state.status = true;},
         [patchRentsTypes.fulfilled.type] : (state, action: PayloadAction<IType>) => {
             state.typesRents.map((item:IType) => {
                 if (item.id === action.payload.id) {
                     item.name = action.payload.name;
                 }
             })
+            state.status = false;
             toast.info('Тип успешно обновлен', {
                 position: "bottom-center"
             })
         },
-        [patchRentsTypes.rejected.type] : () => {
+        [patchRentsTypes.rejected.type] : (state) => {
+            state.status = false;
             toast.error('Ошибка, тип не обновлен', {
                 position: 'bottom-center'
             })
         },
-        [deleteRentsTypes.pending.type] : () => {},
-        [deleteRentsTypes.fulfilled.type] : () => {
+        [deleteRentsTypes.pending.type] : (state) => {state.status = true;},
+        [deleteRentsTypes.fulfilled.type] : (state) => {
+            state.status = false;
             toast.success('Тип успешно удален', {
                 position: "bottom-center"
             })
         },
-        [deleteRentsTypes.rejected.type] : () => {
+        [deleteRentsTypes.rejected.type] : (state) => {
+            state.status = false;
             toast.error('Ошибка, тип не удален', {
                 position: 'bottom-center'
             })

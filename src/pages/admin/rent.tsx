@@ -2,7 +2,7 @@ import React, {ReactElement, useEffect, useState} from 'react';
 import Dashboard from "../../layouts/dashboard";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {deleteRent, fetchRents, patchRent, postRent} from "../../redux/actions/RentAction";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import {PageTransition} from "../../motion";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,7 @@ import {fetchStaff} from "../../redux/actions/StaffAction";
 import {fetchBicycles} from "../../redux/actions/BicyclesAction";
 import {fetchBicyclesTypes, fetchRentsTypes} from "../../redux/actions/TypesAction";
 import {fetchClients} from "../../redux/actions/ClientAction";
+import Preloader from "../../components/Preloader";
 
 const rows:Array<string> = ['id', 'Сотруд.', 'Тел.сотр', 'Вел.', 'Цена', 'Тип', 'Клиент', 'Тел', 'Аренда', 'Цена', 'Период'];
 
@@ -27,7 +28,7 @@ const Rent = () => {
 
     const {modals} = useAppSelector(state => state.modalsReducer);
     const dispatch = useAppDispatch();
-    const {rents, rent} = useAppSelector(state => state.rentReducer);
+    const {rents, rent, status} = useAppSelector(state => state.rentReducer);
     const {typesRents, typesBicycles} = useAppSelector(state => state.typesReducer);
     const {staffs, staff} = useAppSelector(state => state.staffReducer);
     const {clients, client} = useAppSelector(state => state.clientReducer);
@@ -150,7 +151,11 @@ const Rent = () => {
                 status={statusModal}
                 setValue={handleSetRent}
             />
-
+            <AnimatePresence>
+                {
+                    status && <Preloader/>
+                }
+            </AnimatePresence>
         </>
     );
 };

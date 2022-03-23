@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 type IStaffSlice = {
     staffs: Array<IStaff>,
     staff: IStaff,
+    status: boolean
 }
 
 const sampleStaff: IStaff = {
@@ -23,6 +24,7 @@ const initialState: IStaffSlice = {
         name: '',
         phone: ''
     },
+    status: false
 }
 
 export const staffSlice = createSlice({
@@ -50,54 +52,61 @@ export const staffSlice = createSlice({
         }
     },
     extraReducers: {
-        [fetchStaff.pending.type]: () => {
-
+        [fetchStaff.pending.type]: (state) => {
+            state.status = true;
         },
         [fetchStaff.fulfilled.type] : (state, action: PayloadAction<Array<IStaff>>) => {
             state.staffs = action.payload;
+            state.status = false;
         },
-        [fetchStaff.rejected.type] : () => {
+        [fetchStaff.rejected.type] : (state) => {
             toast.error('Ошибка загрузки сотрудников', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
         [postStaff.pending.type]: (state) => {
-
+            state.status = true;
         },
         [postStaff.fulfilled.type]: (state, action: PayloadAction<IStaff>) => {
             state.staffs.push(action.payload);
             state.staff = sampleStaff;
+            state.status = false;
 
             toast.success('Клиент успешно создан', {
                 position: "bottom-center"
             })
         },
         [postStaff.rejected.type] : (state) => {
+            state.status = false;
             toast.error('Ошибка создания клиента', {
                 position: 'bottom-center'
             })
         },
 
-        [deleteStaff.pending.type] : () => {
-
+        [deleteStaff.pending.type] : (state) => {
+            state.status = true;
         },
-        [deleteStaff.fulfilled.type] : () => {
+        [deleteStaff.fulfilled.type] : (state) => {
             toast.success('Клиент успешно удален', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [deleteStaff.rejected.type] : () => {
+        [deleteStaff.rejected.type] : (state) => {
+            state.status = false;
             toast.error('Ошибка, клиент не удален', {
                 position: 'bottom-center'
             })
         },
 
 
-        [patchStaff.pending.type] : () => {
-
+        [patchStaff.pending.type] : (state) => {
+            state.status = true;
         },
         [patchStaff.fulfilled.type] : (state, action: PayloadAction<IStaff>) => {
+            state.status = false;
             state.staffs.map((item: IStaff) => {
                 if (item.id === action.payload.id) {
                     item.name = action.payload.name;
@@ -109,7 +118,8 @@ export const staffSlice = createSlice({
                 position: "bottom-center"
             })
         },
-        [patchStaff.rejected.type] : () => {
+        [patchStaff.rejected.type] : (state) => {
+            state.status = false;
             toast.error('Ошибка, клиент не обновлен', {
                 position: 'bottom-center'
             })

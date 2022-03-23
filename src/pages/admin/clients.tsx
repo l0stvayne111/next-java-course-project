@@ -1,8 +1,8 @@
 import type {ReactElement} from 'react'
 import React, {useEffect, useState} from 'react';
-import {motion} from "framer-motion";
-import 'react-toastify/dist/ReactToastify.css';
 
+import 'react-toastify/dist/ReactToastify.css';
+import {AnimatePresence, motion} from "framer-motion";
 import Dashboard from "../../layouts/dashboard";
 import TableData from "../../components/TableData";
 import {PageTransition} from "../../motion";
@@ -14,6 +14,7 @@ import {IClient} from "../../redux/types/IClient";
 import {clearClient, getItem, setClientValue} from "../../redux/reducers/ClientSlice";
 import {ToastContainer} from "react-toastify";
 import {deleteClient, fetchClients, patchClient, postClient} from "../../redux/actions/ClientAction";
+import Preloader from "../../components/Preloader";
 
 
 
@@ -144,6 +145,11 @@ const Clients = () => {
                 onSubmit={handleAddClient}
                 status={statusModal}
             />
+            <AnimatePresence>
+                {
+                    status && <Preloader/>
+                }
+            </AnimatePresence>
         </>
 
     );

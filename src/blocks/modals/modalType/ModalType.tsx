@@ -71,10 +71,10 @@ const ModalType:React.FC<IModalType> = (
                                 type={`submit`}
                                 className={`btn btn-primary ${!isValid.formValid ? 'disabled' : ''}`}>
                                 {
-                                    status === 'ADD' && (<>Добавить клиента</>)
+                                    status === 'ADD' && (<>Добавить тип</>)
                                 }
                                 {
-                                    status === 'UPDATE' && (<>Обновить клиента</>)
+                                    status === 'UPDATE' && (<>Обновить тип</>)
                                 }
                             </button>
                         </div>

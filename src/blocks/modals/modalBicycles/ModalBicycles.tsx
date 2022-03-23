@@ -104,10 +104,10 @@ const ModalBicycles:React.FC<IModalBicycles> = (
                                 type={`submit`}
                                 className={`btn btn-primary ${!isValid.formValid ? 'disabled' : ''}`}>
                                 {
-                                    status === 'ADD' && (<>Добавить клиента</>)
+                                    status === 'ADD' && (<>Добавить велосипед</>)
                                 }
                                 {
-                                    status === 'UPDATE' && (<>Обновить клиента</>)
+                                    status === 'UPDATE' && (<>Обновить велосипед</>)
                                 }
                             </button>
                         </div>

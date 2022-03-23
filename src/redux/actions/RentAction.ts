@@ -27,7 +27,7 @@ export const postRent = createAsyncThunk(
     }
 )
 export const patchRent = createAsyncThunk(
-    'post/rent',
+    'patch/rent',
     async (action: {id: number, payload: any}, {rejectWithValue}) => {
         try {
             return await API.patchRent({_id: action.id, data:action.payload});

@@ -1,6 +1,6 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import Dashboard from "../../layouts/dashboard";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from "react-toastify";
 import {PageTransition} from "../../motion";
@@ -14,13 +14,14 @@ import {closeModal, openModal} from "../../redux/reducers/ModalSlice";
 import {IBicycles} from "../../redux/types/IBicycles";
 import {fetchBicyclesTypes} from "../../redux/actions/TypesAction";
 import {IType} from "../../redux/types/IType";
+import Preloader from "../../components/Preloader";
 
 const rows = ['id', 'Модель', 'Цена', 'Тип'];
 
 const Bicycles = () => {
 
     const {modals} = useAppSelector(state => state.modalsReducer);
-    const {bicycles, bicycle} = useAppSelector(state => state.bicyclesReducer);
+    const {bicycles, bicycle, status} = useAppSelector(state => state.bicyclesReducer);
     const {typesBicycles} = useAppSelector(state => state.typesReducer);
     const dispatch = useAppDispatch();
 
@@ -134,6 +135,11 @@ const Bicycles = () => {
                 onSubmit={handleOnSubmit}
                 status={statusModal}
             />
+            <AnimatePresence>
+                {
+                    status && <Preloader/>
+                }
+            </AnimatePresence>
         </>
     );
 };

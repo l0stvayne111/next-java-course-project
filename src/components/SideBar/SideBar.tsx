@@ -8,9 +8,11 @@ const SideBar = () => {
     return (
         <div className={style.sidebar}>
             <div className={style.brand}>
-                <a href="#">
-                    TrashAdmin
-                </a>
+                <Link href={`/`}>
+                    <a>
+                        TrashAdmin
+                    </a>
+                </Link>
             </div>
             <div className={style.body}>
                 <ul className={style.nav}>
@@ -49,7 +51,6 @@ const SideBar = () => {
         </div>
     );
 };
-
 
 
 export default SideBar;

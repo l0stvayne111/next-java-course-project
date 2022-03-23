@@ -8,6 +8,7 @@ import {IType} from "../types/IType";
 type IBicyclesState = {
     bicycles: Array<IBicycles>,
     bicycle: IBicycles,
+    status: boolean,
 }
 
 const sampleBicycle: IBicycles = {
@@ -17,7 +18,7 @@ const sampleBicycle: IBicycles = {
     bicycle_type: {
         id: 0,
         name: '',
-    }
+    },
 }
 
 const initialState: IBicyclesState = {
@@ -30,7 +31,8 @@ const initialState: IBicyclesState = {
             id: 0,
             name: '',
         }
-    }
+    },
+    status: false,
 }
 
 export const bicyclesSlice = createSlice({
@@ -70,35 +72,39 @@ export const bicyclesSlice = createSlice({
         }
     },
     extraReducers: {
-        [fetchBicycles.pending.type] : () => {
-
+        [fetchBicycles.pending.type] : (state) => {
+            state.status = true;
         },
         [fetchBicycles.fulfilled.type] : (state, action:PayloadAction<Array<IBicycles>>) => {
             state.bicycles = action.payload;
+            state.status = false;
         },
-        [fetchBicycles.rejected.type] : () => {
+        [fetchBicycles.rejected.type] : (state) => {
             toast.error('Ошибка загрузки велосипедов', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
 
-        [deleteBicycles.pending.type] : () => {
-
+        [deleteBicycles.pending.type] : (state) => {
+            state.status = true;
         },
-        [deleteBicycles.fulfilled.type] : () => {
+        [deleteBicycles.fulfilled.type] : (state) => {
             toast.success('Велосипед успешно удален', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [deleteBicycles.rejected.type] : () => {
+        [deleteBicycles.rejected.type] : (state) => {
             toast.error('Ошибка, Велосипед не удален', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
-        [postBicycles.pending.type]: (e) => {
-
+        [postBicycles.pending.type]: (state) => {
+            state.status = true;
         },
         [postBicycles.fulfilled.type]: (state, action: PayloadAction<IBicycles>) => {
             state.bicycles.push(action.payload);
@@ -107,16 +113,18 @@ export const bicyclesSlice = createSlice({
             toast.success('Велосипед успешно создан', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [postBicycles.rejected.type] : () => {
+        [postBicycles.rejected.type] : (state) => {
 
             toast.error('Ошибка создания велосипеда', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
 
-        [patchBicycles.pending.type] : () => {
-
+        [patchBicycles.pending.type] : (state) => {
+            state.status = true;
         },
         [patchBicycles.fulfilled.type] : (state, action: PayloadAction<IBicycles>) => {
             state.bicycles.map((item: IBicycles) => {
@@ -130,11 +138,13 @@ export const bicyclesSlice = createSlice({
             toast.info('Велосипед успешно обновлен', {
                 position: "bottom-center"
             })
+            state.status = false;
         },
-        [patchBicycles.rejected.type] : () => {
+        [patchBicycles.rejected.type] : (state) => {
             toast.error('Ошибка, велосипед не обновлен', {
                 position: 'bottom-center'
             })
+            state.status = false;
         },
     }
 })
